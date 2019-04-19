@@ -1,3 +1,4 @@
+let mode = 'graph'
 const navBar = document.querySelector('nav')
 fetch('http://localhost:3000/albums').then(res => res.json()).then(albums => {
     albums.forEach(album => {
@@ -6,20 +7,65 @@ fetch('http://localhost:3000/albums').then(res => res.json()).then(albums => {
     })
 })
 
+document.querySelector('#options').addEventListener('click', event => {
+    console.log(event.target.innerText)
+    if(event.target.innerText === 'Graph') {
+        mode = 'graph'
+    } else {
+        mode = 'list'
+    }
+})
+
+document.querySelector('#current').style.display = 'none'
+
 navBar.addEventListener('click', (event) => {
     if(event.target.className == 'album') {
-        if(document.querySelector('svg'))
+        if(document.querySelector('svg')) {
             document.querySelector('svg').remove()
-        
-        displayAlbum(event.target.dataset.id)
+        }
+
+        document.querySelector('ul').innerHTML = ''
+        if(mode == 'graph') {
+            displayAlbumGraph(event.target.dataset.id)
+            document.querySelector('#current').style.display = 'block'
+        }
+        else {
+            displayAlbumList(event.target.dataset.id)
+            document.querySelector('#current').style.display = 'none'
+        }
     }
 })
 
 
+function sortProperties(obj)
+{
+  // convert object into array
+    var sortable=[];
+    for(var key in obj)
+        if(obj.hasOwnProperty(key))
+            sortable.push([key, obj[key]]); // each item is an array in format [key, value]
+    
+    // sort items by value
+    sortable.sort(function(a, b)
+    {
+      return b[1]-a[1]; // compare numbers
+    });
+    return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
+}
 
+function displayAlbumList(id) {
+    fetch(`http://localhost:3000/albums/${id}`).then(res => res.json()).then(data => {
+         for (const [word, count] of sortProperties(data.histogram)) {
+            let fontSize = Math.max(count, 12) * 2
+            fontSize = Math.min(fontSize, 128)
+            document.querySelector('ul').innerHTML += `<p style="font-size: ${fontSize}px;">${word}:${count}</p>`
+         }
+    })
+}
 
-function displayAlbum(id) {
-    fetch(`http://localhost:3000/albums/${id}`).then(res => res.json()).then(data => {dataset = {"children": []};
+function displayAlbumGraph(id) {
+    fetch(`http://localhost:3000/albums/${id}`).then(res => res.json()).then(data => {
+    dataset = {"children": []};
     var diameter = 700;
 
     var svg = d3.select("body")
@@ -28,7 +74,11 @@ function displayAlbum(id) {
         .attr("height", diameter)
         .attr("class", "bubble");
     let countt = 0;
-    for (const [word, count] of Object.entries(data.histogram)) {
+    // console.log(sortProperties(data.histogram))
+    // console.log(Object.entries(data.histogram))
+    for (const [word, count] of sortProperties(data.histogram)) {
+            // const fontSize = Math.max(count, 12)
+            // document.querySelector('ul').innerHTML += `<p style="font-size: ${fontSize}px;">${word}:${count}</p>`
             dataset.children.push({"Word": word, "Count": count})
     }
     // debugger
@@ -39,20 +89,6 @@ function displayAlbum(id) {
         .size([diameter, diameter])
         .padding(3.5);
 
-
-     var defs = svg.append("defs");
-
-    //Filter for the outside glow
-    var filter = defs.append("filter")
-        .attr("id","glow");
-    filter.append("feGaussianBlur")
-        .attr("stdDeviation","3.5")
-        .attr("result","coloredBlur");
-    var feMerge = filter.append("feMerge");
-    feMerge.append("feMergeNode")
-        .attr("in","coloredBlur");
-    feMerge.append("feMergeNode")
-        .attr("in","SourceGraphic");
 
     var nodes = d3.hierarchy(dataset)
         .sum(function(d) { return d.Count; });
