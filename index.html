@@ -4,50 +4,33 @@
     <meta charset="utf-8">
         <title>Queen Beyoncé </title>
         <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
+        <link href="index.css" rel="stylesheet">
 </head>
 
 <body style="background-color: #000; color: #fff; font-family: Arial;">
 
 
-    <style type="text/css">
-        @keyframes fadein {
-            from { opacity: 0; }
-            to   { opacity: 1; }
-        }
-        .node {
-             -webkit-animation: fadein 1s; 
-               -moz-animation: fadein 1s; /* Firefox < 16 */
-                -ms-animation: fadein 1s; /* Internet Explorer */
-                 -o-animation: fadein 1s; /* Opera < 12.1 */
-            animation: fadein 1s;
-        }
-        svg {
-            position: absolute; 
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%)
-        }
 
-        a {
-            text-decoration: none;
-            color: blue;
-            font-weight: 800
-        }
-    </style>
-
+    <div class="header"><span class="headerText">BEYONCÉ</span></span></div>
+    <div class="everythingElse">
     <div id="options">
         <a href="#">Graph</a>
         <a href="#">List</a>
     </div>
-    <nav style="text-align: right">
+    <nav>
+        <ul class="navi">
+            
+        </ul>
     </nav>
 
     <div id="current">
         <h1>Current Word: <span id="word"></span></h1>
         <h3>Count: <span id="count"></span></h3>
     </div>
-    <ul style="text-align: center">
+    <ul id="lyriks" style="text-align: center">
     </ul>
+    </div>
     <script src="index.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@ const navBar = document.querySelector('nav')
 fetch('http://localhost:3000/albums').then(res => res.json()).then(albums => {
     albums.forEach(album => {
         console.log(albums)
-        navBar.innerHTML += `<a href="#" class="album" data-id="${album.id}">${album.name}</a><br>`
+        navBar.querySelector('ul').innerHTML += `<li class="naviLI"><a href="#" class="album" data-id="${album.id}">${album.name}</a><br></li>`
     })
 })
 
@@ -24,7 +24,7 @@ navBar.addEventListener('click', (event) => {
             document.querySelector('svg').remove()
         }
 
-        document.querySelector('ul').innerHTML = ''
+        document.querySelector('#lyriks').innerHTML = ''
         if(mode == 'graph') {
             displayAlbumGraph(event.target.dataset.id)
             document.querySelector('#current').style.display = 'block'
@@ -68,7 +68,7 @@ function displayAlbumGraph(id) {
     dataset = {"children": []};
     var diameter = 700;
 
-    var svg = d3.select("body")
+    var svg = d3.select("div.everythingElse")
         .append("svg")
         .attr("width", diameter)
         .attr("height", diameter)

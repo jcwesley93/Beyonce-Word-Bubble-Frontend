@@ -1,0 +1,69 @@
+* {
+    font-family: 'Abril Fatface', cursive;
+}
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+.node {
+     -webkit-animation: fadein 1s; 
+       -moz-animation: fadein 1s; /* Firefox < 16 */
+        -ms-animation: fadein 1s; /* Internet Explorer */
+         -o-animation: fadein 1s; /* Opera < 12.1 */
+    animation: fadein 1s;
+}
+svg {
+    position: absolute; 
+    /* top: 50%; */
+    left: 50%;
+    transform: translate(-50%)
+}
+
+a {
+    text-decoration: none;
+    color: blue;
+    font-weight: 800
+}
+
+.header {
+    width: absolute; 
+    height: 150px; 
+    background-color: transparent;
+   
+    
+}
+
+.navi {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.naviLI{
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+.headerText {
+    position: absolute; 
+    left: 50%;
+    transform: translate(-50%);
+    font-size: 100px;
+    animation: blinking 2s infinite;
+    -webkit-animation:blinking 4s infinite;
+}
+
+@keyframes blinking{
+   0%{ color:white; } 
+   49%{ color: transparent; } 
+   50%{ color: white; } 
+   99%{ color: transparent; }
+   100%{ color: white; }  
+}
